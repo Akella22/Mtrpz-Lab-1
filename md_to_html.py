@@ -59,12 +59,12 @@ def main():
     if args.out:
         try:
             with open(args.out, 'w', encoding='utf-8') as f:
-                f.write(html)
+                f.write(output)
         except Exception as e:
             sys.stderr.write(f"Error: {str(e)}\n")
             sys.exit(1)
     else:
-        print(html)
+        print(output)
 
 if __name__ == "__main__":
     main()
