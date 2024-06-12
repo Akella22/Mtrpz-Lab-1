@@ -25,4 +25,3 @@ This is a simple console application that converts a subset of Markdown to HTML.
 - `python md_to_html.py <input_file> [--out <output_file>]`
 
 
-Some changes
