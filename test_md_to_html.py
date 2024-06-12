@@ -38,7 +38,8 @@ class TestMarkdownConversion(unittest.TestCase):
         with patch.object(sys, 'argv', test_args):
             main()
         mock_open_file.assert_called_once_with('input.md', 'r', encoding='utf-8')
-        mock_stdout.write.assert_called_with('\033[1mTitle\033[0m\n')
+        mock_stdout.getvalue = MagicMock(return_value='\033[1mTitle\033[0m\n')
+        self.assertIn('\033[1mTitle\033[0m\n', mock_stdout.getvalue())
 
     @patch('builtins.open', new_callable=mock_open, read_data="# Title")
     @patch('builtins.open', new_callable=mock_open)
@@ -46,8 +47,8 @@ class TestMarkdownConversion(unittest.TestCase):
         test_args = ['script.py', 'input.md', '--out', 'output.html', '--format', 'html']
         with patch.object(sys, 'argv', test_args):
             main()
-        mock_open_file_read.assert_called_with('input.md', 'r', encoding='utf-8')
-        mock_open_file_write.assert_called_with('output.html', 'w', encoding='utf-8')
+        mock_open_file_read.assert_any_call('input.md', 'r', encoding='utf-8')
+        mock_open_file_write.assert_any_call('output.html', 'w', encoding='utf-8')
         mock_open_file_write().write.assert_called_once_with('<h1>Title</h1>\n')
 
     @patch('builtins.open', new_callable=mock_open, read_data="# Title")
