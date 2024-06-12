@@ -51,7 +51,10 @@ def main():
         sys.stderr.write(f"Error: {str(e)}\n")
         sys.exit(1)
 
-    html = md_to_html(markdown)
+    if args.format == 'html':
+        output = md_to_html(markdown)
+    else:
+        output = md_to_ansi(markdown)
 
     if args.out:
         try:
