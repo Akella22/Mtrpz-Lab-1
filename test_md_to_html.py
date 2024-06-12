@@ -42,14 +42,15 @@ class TestMarkdownConversion(unittest.TestCase):
         self.assertIn('\033[1mTitle\033[0m\n', mock_stdout.getvalue())
 
     @patch('builtins.open', new_callable=mock_open, read_data="# Title")
-    @patch('builtins.open', new_callable=mock_open)
-    def test_main_output_file_html(self, mock_open_file_read, mock_open_file_write):
+    def test_main_output_file_html(self, mock_open_file_read):
         test_args = ['script.py', 'input.md', '--out', 'output.html', '--format', 'html']
-        with patch.object(sys, 'argv', test_args):
-            main()
-        mock_open_file_read.assert_any_call('input.md', 'r', encoding='utf-8')
-        mock_open_file_write.assert_any_call('output.html', 'w', encoding='utf-8')
-        mock_open_file_write().write.assert_called_once_with('<h1>Title</h1>\n')
+        m_open = mock_open(read_data="# Title")
+        with patch('builtins.open', m_open):
+            with patch.object(sys, 'argv', test_args):
+                main()
+        m_open.assert_any_call('input.md', 'r', encoding='utf-8')
+        m_open.assert_any_call('output.html', 'w', encoding='utf-8')
+        m_open().write.assert_called_once_with('<h1>Title</h1>')
 
     @patch('builtins.open', new_callable=mock_open, read_data="# Title")
     @patch('sys.stderr', new_callable=MagicMock)
