@@ -17,10 +17,27 @@ def md_to_html(markdown):
             html.append(f"<p>{line}</p>")
     return '\n'.join(html)
 
+def md_to_ansi(markdown):
+    ansi = []
+    lines = markdown.split('\n')
+    for line in lines:
+        if line.startswith('# '):
+            ansi.append(f"\033[1m{line[2:]}\033[0m")  # Bold for H1
+        elif line.startswith('## '):
+            ansi.append(f"\033[1m{line[3:]}\033[0m")  # Bold for H2
+        elif line.startswith('### '):
+            ansi.append(f"\033[1m{line[4:]}\033[0m")  # Bold for H3
+        elif line.startswith('- '):
+            ansi.append(f"\033[7m{line[2:]}\033[0m")  # Inverted for list items
+        else:
+            ansi.append(f"\033[7m{line}\033[0m")      # Inverted for preformatted text
+    return '\n'.join(ansi)
+
 def main():
     parser = argparse.ArgumentParser(description='Convert Markdown to HTML.')
     parser.add_argument('input_file', help='Path to the input Markdown file')
     parser.add_argument('--out', help='Path to the output HTML file')
+    parser.add_argument('--format', choices=['html', 'ansi'], default='ansi', help='Output format: "html" for HTML file, "ansi" for terminal output')
 
     args = parser.parse_args()
 
@@ -34,18 +51,20 @@ def main():
         sys.stderr.write(f"Error: {str(e)}\n")
         sys.exit(1)
 
-    html = md_to_html(markdown)
+    if args.format == 'html':
+        output = md_to_html(markdown)
+    else:
+        output = md_to_ansi(markdown)
 
     if args.out:
         try:
             with open(args.out, 'w', encoding='utf-8') as f:
-                f.write(html)
+                f.write(output)
         except Exception as e:
             sys.stderr.write(f"Error: {str(e)}\n")
             sys.exit(1)
     else:
-        print(html)
+        print(output)
 
 if __name__ == "__main__":
     main()
-    \\ git add .—> git commit -m "test" —> git push origin main —> git revert HEAD —> git push origin main
