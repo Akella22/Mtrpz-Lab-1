@@ -37,6 +37,7 @@ def main():
     parser = argparse.ArgumentParser(description='Convert Markdown to HTML.')
     parser.add_argument('input_file', help='Path to the input Markdown file')
     parser.add_argument('--out', help='Path to the output HTML file')
+    parser.add_argument('--format', choices=['html', 'ansi'], default='ansi', help='Output format: "html" for HTML file, "ansi" for terminal output')
 
     args = parser.parse_args()
 
