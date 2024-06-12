@@ -24,4 +24,4 @@ This is a simple console application that converts a subset of Markdown to HTML.
 
 - `python md_to_html.py <input_file> [--out <output_file>]`
 
-
+## (Revert commit)[https://github.com/Akella22/Mtrpz-Lab-1/commit/bea1adc1536c30cb85b6b1a819c6d7dbc91ca1b4]
