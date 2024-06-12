@@ -48,3 +48,4 @@ def main():
 
 if __name__ == "__main__":
     main()
+    \\ git add .—> git commit -m "test" —> git push origin main —> git revert HEAD —> git push origin main
